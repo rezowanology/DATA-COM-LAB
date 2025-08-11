@@ -1,0 +1,74 @@
+%% 1. S(t) = A*sin(2*pi*f*t) in time domain
+A = 1; f = 5; t = 0:0.001:1;
+S1 = A*sin(2*pi*f*t);
+figure; plot(t, S1); title('S(t) = A sin(2πft)'); xlabel('Time (s)'); ylabel('Amplitude');
+
+%% 2. S(t) = A*cos(2*pi*f*t + phi) in time domain
+phi = pi/4;
+S2 = A*cos(2*pi*f*t + phi);
+figure; plot(t, S2); title('S(t) = A cos(2πft + φ)');
+
+%% 3. S(t) = A*cos(2*pi*f*t) in frequency domain
+N = length(t);
+S3 = A*cos(2*pi*f*t);
+F = fft(S3);
+freq = (0:N-1)*(1/(t(2)-t(1))/N);
+figure; plot(freq, abs(F)); title('Frequency Domain of S(t) = A cos(2πft)');
+
+%% 4. S(t) = A*exp(-a*t)*sin(2*pi*f*t)
+a = 2;
+S4 = A*exp(-a*t).*sin(2*pi*f*t);
+figure; plot(t, S4); title('Damped Sine Wave');
+
+%% 5. Generate square wave using sinusoidal signal
+S5 = square(2*pi*f*t);
+figure; plot(t, S5); title('Square Wave from Sine');
+
+%% 6. Generate Sawtooth wave
+S6 = sawtooth(2*pi*f*t);
+figure; plot(t, S6); title('Sawtooth Wave');
+
+%% 7. Manchester line coding (data: 10110010)
+data = [1 0 1 1 0 0 1 0];
+bitRate = 1; T = 1/bitRate;
+t7 = 0:0.001:length(data);
+manchester = [];
+for bit = data
+    if bit == 1
+        manchester = [manchester ones(1,500) -ones(1,500)];
+    else
+        manchester = [manchester -ones(1,500) ones(1,500)];
+    end
+end
+figure; plot(linspace(0,length(data),length(manchester)), manchester);
+title('Manchester Encoding');
+
+%% 8. Bipolar AMI line coding (data: 10101001)
+data = [1 0 1 0 1 0 0 1];
+ami = [];
+lastPolarity = 1;
+for bit = data
+    if bit == 1
+        ami = [ami lastPolarity*ones(1,1000)];
+        lastPolarity = -lastPolarity;
+    else
+        ami = [ami zeros(1,1000)];
+    end
+end
+figure; plot(linspace(0,length(data),length(ami)), ami);
+title('Bipolar AMI Encoding');
+
+%% 9. Amplitude Modulation (cosine message)
+fm = 2; fc = 20; Am = 1; Ac = 1;
+m = Am*cos(2*pi*fm*t);
+carrier = Ac*cos(2*pi*fc*t);
+amSignal = (1 + m).*carrier;
+figure; plot(t, amSignal); title('Amplitude Modulation');
+
+%% 10. Pulse Code Modulation (PCM) of sinusoid
+fs = 100; t10 = 0:1/fs:1; sig = sin(2*pi*5*t10);
+n = 3; % bits
+L = 2^n;
+xmin = min(sig); xmax = max(sig);
+qSig = round((sig - xmin)/(xmax - xmin)*(L-1));
+figure; stairs(t10, qSig); title('PCM Quantized Signal');
