@@ -1,74 +1,307 @@
-%% 1. S(t) = A*sin(2*pi*f*t) in time domain
-A = 1; f = 5; t = 0:0.001:1;
-S1 = A*sin(2*pi*f*t);
-figure; plot(t, S1); title('S(t) = A sin(2πft)'); xlabel('Time (s)'); ylabel('Amplitude');
+#4
 
-%% 2. S(t) = A*cos(2*pi*f*t + phi) in time domain
-phi = pi/4;
-S2 = A*cos(2*pi*f*t + phi);
-figure; plot(t, S2); title('S(t) = A cos(2πft + φ)');
+A = 1;           % Initial amplitude of the wave
+f = 5;           % Frequency in Hz (5 cycles per second)
+alpha = 2;       % Damping factor (how fast it fades)
+t = 0:0.01:2;    % Time from 0 to 2 seconds, step 0.01s
 
-%% 3. S(t) = A*cos(2*pi*f*t) in frequency domain
-N = length(t);
-S3 = A*cos(2*pi*f*t);
-F = fft(S3);
-freq = (0:N-1)*(1/(t(2)-t(1))/N);
-figure; plot(freq, abs(F)); title('Frequency Domain of S(t) = A cos(2πft)');
+x = A * exp(-alpha * t) .* sin(2 * pi * f * t);
+% Calculates damped sine wave:
+%   exp(-alpha*t) → decaying envelope
+%   sin(2*pi*f*t) → oscillation
+%   .* → element-wise multiply
 
-%% 4. S(t) = A*exp(-a*t)*sin(2*pi*f*t)
-a = 2;
-S4 = A*exp(-a*t).*sin(2*pi*f*t);
-figure; plot(t, S4); title('Damped Sine Wave');
+plot(t, x);      % Plot wave vs. time
+title('Damped Sine Wave');  % Set title
+xlabel('Time (s)');         % X-axis label
+ylabel('Amplitude');        % Y-axis label
+grid on;                    % Show grid lines
 
-%% 5. Generate square wave using sinusoidal signal
-S5 = square(2*pi*f*t);
-figure; plot(t, S5); title('Square Wave from Sine');
 
-%% 6. Generate Sawtooth wave
-S6 = sawtooth(2*pi*f*t);
-figure; plot(t, S6); title('Sawtooth Wave');
 
-%% 7. Manchester line coding (data: 10110010)
-data = [1 0 1 1 0 0 1 0];
-bitRate = 1; T = 1/bitRate;
-t7 = 0:0.001:length(data);
-manchester = [];
-for bit = data
-    if bit == 1
-        manchester = [manchester ones(1,500) -ones(1,500)];
+
+
+
+#3
+
+Fs = 10;                    % Sampling frequency (samples per second)
+t = 0:1/Fs:1-1/Fs;          % Time vector for 1 second duration
+x = cos(2*pi*50*t);         % 50 Hz sine wave signal
+N = length(x);              % Number of samples in the signal
+X = fft(x);                 % Fast Fourier Transform → frequency domain
+f = (0:N-1)*(Fs/N);         % Frequency axis values
+
+amplitude = abs(X)/N;       % Normalized amplitude spectrum
+disp(amplitude);            % Display amplitude values in console
+
+figure;                     % Create new figure window
+plot(f, amplitude);         % Plot frequency vs. amplitude
+xlabel('Frequency (Hz)');   % X-axis label
+ylabel('Amplitude');        % Y-axis label
+title('Frequency vs Amplitude'); % Plot title
+%xlim([0 Fs/2]);             % (Optional) show only positive half of spectrum
+%grid on;                    % (Optional) add grid
+
+
+
+#1
+
+
+frequency = 2;             % Frequency of sine wave (Hz)
+amplitude = 3;             % Peak height of wave
+duration = 4;              % Total signal duration (seconds)
+samplingRate = 10;         % Samples per second
+
+t = 0:1/samplingRate:duration;
+% Time vector from 0 to duration, step = 1/samplingRate
+
+y = amplitude * sin(2 * pi * frequency * t);
+% Generate sine wave:
+%   2*pi*frequency → converts Hz to radians/sec
+%   sin(...) → oscillation
+%   amplitude * (...) → scales height
+
+plot(t, y);                 % Plot signal vs. time
+xlabel('Time (s)');         % X-axis label
+ylabel('Amplitude');        % Y-axis label
+title('Simple Sinusoidal Signal'); % Graph title
+
+
+
+#2
+
+frequency = 2;             % Frequency of the cosine wave (Hz)
+amplitude = 3;             % Peak amplitude
+duration = 4;              % Duration of signal in seconds
+samplingRate = 100;        % Samples per second
+theta = pi;                % Phase shift in radians (180 degrees)
+
+t = 0:1/samplingRate:duration;
+% Time vector from 0 to duration in small steps (0.01 sec)
+
+y = amplitude * cos(2 * pi * frequency * t + theta);
+% Generate cosine wave with phase shift theta:
+% cos(angular frequency × time + phase)
+
+plot(t, y);                 % Plot the cosine signal vs time
+xlabel('Time (s)');         % Label x-axis
+ylabel('Amplitude');        % Label y-axis
+title('Simple cosine Signal with theta'); % Plot title
+
+
+
+
+
+#6
+
+frequency = 2;       % Frequency of the sawtooth wave in Hz
+amplitude = 3;       % Peak amplitude of the wave
+duration = 4;        % Duration of the signal in seconds
+samplingRate = 1000; % Number of samples per second
+
+t = 0:1/samplingRate:duration;
+% Create time vector from 0 to duration in steps of 1/samplingRate
+
+x = amplitude * sawtooth(2 * pi * frequency * t);
+% Generate sawtooth wave scaled by amplitude
+
+plot(t, x, 'LineWidth', 1.5);
+% Plot the sawtooth wave with thicker line
+
+xlabel('Time (s)');  % Label x-axis
+ylabel('Amplitude'); % Label y-axis
+title('Sawtooth Signal: x(t) = A · sawtooth(2πft)'); % Title of the plot
+
+
+#5
+
+frequency = 1;           % Frequency of the signal in Hz
+amplitude = 2;           % Amplitude of the square wave
+duration = 3;            % Duration of the signal in seconds
+samplingRate = 100;      % Number of samples per second
+
+t = 0:1/samplingRate:duration;
+% Time vector from 0 to duration in steps of 1/samplingRate
+
+x = amplitude * sign(sin(2 * pi * frequency * t));
+% Generate square wave by applying sign() to sine wave:
+% sign() outputs +1 if sine > 0, -1 if sine < 0, 0 if sine = 0
+% Multiply by amplitude to scale the wave
+
+plot(t, x);
+% Plot the square wave signal versus time
+
+xlabel('Time (s)');       % Label x-axis
+ylabel('Amplitude');      % Label y-axis
+title('Sine square Signal'); % Plot title
+
+
+
+
+#7
+
+
+clc;                     % Clear command window
+clear;                   % Clear workspace variables
+
+data = [1 0 1 1 0 0 1 0];  % Input binary data sequence
+
+bit_duration = 1;          % Duration of one bit in seconds
+fs = 100;                  % Sampling frequency (samples per second)
+samples_per_bit = fs * bit_duration;  % Samples per bit
+half_samples = samples_per_bit / 2;   % Half samples for Manchester transition
+
+time = 0:1/fs:(length(data) * bit_duration) - 1/fs;
+% Time vector for entire signal duration
+
+manchester = [];           % Initialize Manchester encoded signal vector
+
+for i = 1:length(data)
+    if data(i) == 1
+        bit_wave = [ones(1, half_samples), -ones(1, half_samples)];
+        % Bit 1: High (+1) first half, Low (-1) second half
     else
-        manchester = [manchester -ones(1,500) ones(1,500)];
+        bit_wave = [-ones(1, half_samples), ones(1, half_samples)];
+        % Bit 0: Low (-1) first half, High (+1) second half
     end
+    manchester = [manchester bit_wave];   % Append encoded bit waveform
 end
-figure; plot(linspace(0,length(data),length(manchester)), manchester);
-title('Manchester Encoding');
 
-%% 8. Bipolar AMI line coding (data: 10101001)
-data = [1 0 1 0 1 0 0 1];
-ami = [];
-lastPolarity = 1;
-for bit = data
-    if bit == 1
-        ami = [ami lastPolarity*ones(1,1000)];
-        lastPolarity = -lastPolarity;
+figure;
+plot(time, manchester, 'LineWidth', 2);  % Plot Manchester waveform with thick lines
+axis([0 length(data)*bit_duration -1.5 1.5]);  % Set axis limits
+grid on;                                % Enable grid
+xlabel('Time (s)');                     % X-axis label
+ylabel('Amplitude (V)');                % Y-axis label
+title('Polar Biphase (Manchester) Line Coding');  % Plot title
+xticks(0:bit_duration:length(data));   % Set x-axis ticks at bit boundaries
+yticks([-1 0 1]);                      % Set y-axis ticks for voltage levels
+
+
+
+
+#9
+
+Fs = 10000;             % Sampling frequency in Hz
+t = 0:1/Fs:0.01;        % Time vector for 10 milliseconds
+fc = 1000;              % Carrier frequency in Hz
+fm = 100;               % Message signal frequency in Hz
+Am = 1;                 % Message signal amplitude
+Ac = 1;                 % Carrier signal amplitude
+mu = 0.5;               % Modulation index (depth of amplitude modulation)
+
+m = Am * cos(2 * pi * fm * t);
+% Generate message (modulating) signal as a cosine wave
+
+c = Ac * cos(2 * pi * fc * t);
+% Generate carrier signal as a cosine wave
+
+s = (1 + mu * cos(2 * pi * fm * t)) .* c;
+% Generate amplitude modulated (AM) signal:
+% The carrier amplitude is varied proportionally to the message signal
+
+figure;
+
+subplot(3,1,1);
+plot(t, m);
+title('Message Signal');
+xlabel('Time (s)');
+ylabel('Amplitude');
+
+subplot(3,1,2);
+plot(t, c);
+title('Carrier Signal');
+xlabel('Time (s)');
+ylabel('Amplitude');
+
+subplot(3,1,3);
+plot(t, s);
+title('AM Modulated Signal');
+xlabel('Time (s)');
+ylabel('Amplitude');
+
+
+#10
+clc;                   % Clear command window
+clear;                 % Clear workspace variables
+
+f = 5;                 % Frequency of original analog sine wave (Hz)
+fs = 100;              % Sampling frequency (samples per second)
+t = 0:1/fs:1;          % Time vector for 1 second
+x = sin(2 * pi * f * t); % Generate analog sine wave signal
+
+n_bits = 2;            % Number of bits for quantization (2 bits → 4 levels)
+L = 2^n_bits;          % Number of quantization levels (4)
+x_min = min(x);        % Minimum value of signal
+x_max = max(x);        % Maximum value of signal
+q_step = (x_max - x_min) / (L - 1);  % Quantization step size
+
+xq_index = round((x - x_min) / q_step);
+% Quantize signal samples to discrete levels (indices)
+
+xq = xq_index * q_step + x_min;
+% Convert quantization indices back to quantized amplitude values
+
+bin_pcm = dec2bin(xq_index, n_bits);
+% Convert quantization indices to binary strings (PCM codes)
+
+figure;
+plot(t, x, 'b', 'LineWidth', 1.5);   % Plot original analog signal in blue
+hold on;
+stairs(t, xq, 'r', 'LineWidth', 1.5); % Plot quantized signal in red (stair-step)
+xlabel('Time (s)');
+ylabel('Amplitude');
+title('PCM Encoding of a Sine Wave');
+legend('Original Signal', 'Quantized Signal');
+grid on;
+
+
+
+#8 
+
+
+
+clc;                    % Clear command window
+clear;                  % Clear workspace variables
+
+data = [1 0 1 1 0 1 0 0 1];  % Input binary data sequence
+
+bit_duration = 1;         % Duration of each bit in seconds
+fs = 100;                 % Sampling frequency in Hz
+samples_per_bit = fs * bit_duration;  % Number of samples per bit
+
+time = 0:1/fs:(length(data) * bit_duration) - 1/fs;
+% Time vector for full signal duration
+
+ami = [];                 % Initialize output signal vector for AMI
+last_polarity = -1;       % Initialize polarity so first '1' is +1
+
+for i = 1:length(data)
+    if data(i) == 1
+        last_polarity = -last_polarity;           % Alternate polarity (+1, -1)
+        bit_wave = last_polarity * ones(1, samples_per_bit);  % Generate pulse for '1'
     else
-        ami = [ami zeros(1,1000)];
+        bit_wave = zeros(1, samples_per_bit);      % Zero voltage for '0'
     end
+    ami = [ami bit_wave];                          % Append bit waveform
 end
-figure; plot(linspace(0,length(data),length(ami)), ami);
-title('Bipolar AMI Encoding');
 
-%% 9. Amplitude Modulation (cosine message)
-fm = 2; fc = 20; Am = 1; Ac = 1;
-m = Am*cos(2*pi*fm*t);
-carrier = Ac*cos(2*pi*fc*t);
-amSignal = (1 + m).*carrier;
-figure; plot(t, amSignal); title('Amplitude Modulation');
+figure;
+plot(time, ami, 'LineWidth', 2);                   % Plot the AMI waveform
+axis([0 length(data) * bit_duration -1.5 1.5]);    % Set axis limits
+grid on;                                           % Enable grid lines
+xlabel('Time (s)');                                % Label x-axis
+ylabel('Amplitude (V)');                           % Label y-axis
+title('Bipolar AMI (Alternate Mark Inversion) Line Coding'); % Plot title
+xticks(0:bit_duration:length(data));               % X-axis ticks at bit intervals
+yticks([-1 0 1]);                                  % Y-axis ticks at voltage levels
 
-%% 10. Pulse Code Modulation (PCM) of sinusoid
-fs = 100; t10 = 0:1/fs:1; sig = sin(2*pi*5*t10);
-n = 3; % bits
-L = 2^n;
-xmin = min(sig); xmax = max(sig);
-qSig = round((sig - xmin)/(xmax - xmin)*(L-1));
-figure; stairs(t10, qSig); title('PCM Quantized Signal');
+
+
+
+
+
+
+
+
+
