@@ -1,4 +1,4 @@
-#Damped Sine Wave
+#4
 
 A = 1;           % Initial amplitude of the wave
 f = 5;           % Frequency in Hz (5 cycles per second)
@@ -18,53 +18,15 @@ ylabel('Amplitude');        % Y-axis label
 grid on;                    % Show grid lines
 
 
-#Cosine wave 
-
-frequency = 2;       % Frequency in Hz (2 cycles per second)
-amplitude = 3;       % Peak height of the cosine wave
-duration = 4;        % Total time to generate (seconds)
-samplingRate = 100;  % Number of samples per second
-
-t = 0:1/samplingRate:duration;
-% Time vector from 0 to duration
-% Steps of 1/samplingRate = 0.01 seconds
-
-y = amplitude * cos(2 * pi * frequency * t);
-% Cosine wave:
-%   2*pi*frequency → converts Hz to radians/sec
-%   cos(...) → oscillation
-%   amplitude * (...) → scales height to given amplitude
-
-plot(t, y);                       % Plot the wave vs. time
-xlabel('Time (s)');               % Label x-axis
-ylabel('Amplitude');              % Label y-axis
-title('Simple Sinusoidal Signal');% Add title
 
 
-#PURE EXPONENTIAL DECAY SIGNAL
-
-A = 5;                      % Initial amplitude (starting height)
-alpha = 2;                  % Decay rate (how fast it decreases)
-duration = 2;               % Total time span (seconds)
-samplingRate = 10;          % Samples per second
-
-t = 0:1/samplingRate:duration;
-% Time vector from 0 to duration with step size 1/samplingRate
-
-x = A * exp(-alpha * t);
-% Exponential decay: starts at A, decreases at rate alpha
-
-plot(t, x);                  % Plot amplitude vs. time
-xlabel('Time (s)');          % Label for x-axis
-ylabel('Amplitude');         % Label for y-axis
-title('Exponential Decay: x(t) = A · exp(-a·t)'); % Graph title
 
 
-#50HZ SINE WAVE, COMPUTES FOURER Transform, amplitude vs freq
+#3
 
 Fs = 10;                    % Sampling frequency (samples per second)
 t = 0:1/Fs:1-1/Fs;          % Time vector for 1 second duration
-x = sin(2*pi*50*t);         % 50 Hz sine wave signal
+x = cos(2*pi*50*t);         % 50 Hz sine wave signal
 N = length(x);              % Number of samples in the signal
 X = fft(x);                 % Fast Fourier Transform → frequency domain
 f = (0:N-1)*(Fs/N);         % Frequency axis values
@@ -82,7 +44,7 @@ title('Frequency vs Amplitude'); % Plot title
 
 
 
-# SINE WAVE
+#1
 
 
 frequency = 2;             % Frequency of sine wave (Hz)
@@ -105,27 +67,8 @@ ylabel('Amplitude');        % Y-axis label
 title('Simple Sinusoidal Signal'); % Graph title
 
 
-# 2hz sine wave with amplitude over 3 or 4 second 
 
-frequency = 2;             % Sine wave frequency (Hz)
-amplitude = 3;             % Peak value of the wave
-duration = 4;              % Total time length in seconds
-samplingRate = 10;         % Number of samples per second
-
-t = 0:1/samplingRate:duration;
-% Time vector from 0 to duration, increments of 0.1 sec
-
-y = amplitude * sin(2 * pi * frequency * t);
-% Create sine wave using formula:
-% amplitude × sin(angular frequency × time)
-
-plot(t, y);                 % Draw signal vs. time
-xlabel('Time (s)');         % X-axis label
-ylabel('Amplitude');        % Y-axis label
-title('Simple Sinusoidal Signal'); % Graph title
-
-
-#cosine wave with details
+#2
 
 frequency = 2;             % Frequency of the cosine wave (Hz)
 amplitude = 3;             % Peak amplitude
@@ -146,78 +89,10 @@ ylabel('Amplitude');        % Label y-axis
 title('Simple cosine Signal with theta'); % Plot title
 
 
-# sine wave and cos wave for comparison
-
-frequency = 2;             % Frequency in Hz
-amplitude = 3;             % Signal amplitude
-duration = 4;              % Duration in seconds
-samplingRate = 100;        % Samples per second
-
-t = 0:1/samplingRate:duration;
-% Time vector from 0 to duration with step 0.01 s
-
-y1 = amplitude * sin(2 * pi * frequency * t);
-% Generate sine wave signal
-
-y2 = amplitude * cos(2 * pi * frequency * t);
-% Generate cosine wave signal
-
-plot(t, y1);
-hold on;
-plot(t, y2);
-% Plot both sine and cosine signals on the same graph
-
-xlabel('Time (s)');        % X-axis label
-ylabel('Amplitude');       % Y-axis label
-title('Sine cosine combined Signal'); % Plot title
-
-#signal made of two sine waves and compute freq spectrum
-
-Fs = 10;                          % Sampling frequency (samples per second)
-t = 0:1/Fs:1-1/Fs;                % Time vector for 1 second (excluding endpoint)
-
-x = sin(2*pi*50*t) + 0.5*sin(2*pi*150*t);
-% Signal composed of two sine waves: 
-% one at 50 Hz (full amplitude) and another at 150 Hz (half amplitude)
-
-N = length(x);                   % Number of samples in signal
-X = fft(x);                     % Compute Fast Fourier Transform (frequency content)
-f = (0:N-1)*(Fs/N);             % Frequency bins corresponding to FFT results
-
-amplitude = abs(X)/N;           % Calculate normalized amplitude spectrum
-
-figure;                         % Open new plot window
-plot(f, amplitude);             % Plot amplitude vs frequency
-xlabel('Frequency (Hz)');       % Label x-axis
-ylabel('Amplitude');            % Label y-axis
-title('Frequency Domain Representation'); % Plot title
-xlim([0 Fs/2]);                 % Limit x-axis to positive frequencies only
-grid on;                       % Show grid
 
 
-#pulse wave modulation
-f = 5;                  % Frequency of the pulse wave in Hz
-duty = 50;              % Duty cycle percentage (time ON vs total period)
-duration = 1;           % Total time duration of the signal (seconds)
-fs = 1000;              % Sampling rate in samples per second
-t = 0:1/fs:duration;    % Time vector from 0 to duration in steps of 1/fs
 
-x = square(2 * pi * f * t, duty);
-% Generate a square (pulse) wave with specified frequency and duty cycle
-
-x = (x + 1) / 2;
-% Shift the wave values from [-1, 1] to [0, 1] for easier interpretation
-
-plot(t, x, 'LineWidth', 1.5);
-% Plot the pulse wave with thicker lines for better visibility
-
-xlabel('Time (s)');     % Label x-axis
-ylabel('Amplitude');    % Label y-axis
-title('Pulse Wave (10% Duty Cycle)');
-% Add plot title
-
-
-#SAWTOOTH SIGNAL
+#6
 
 frequency = 2;       % Frequency of the sawtooth wave in Hz
 amplitude = 3;       % Peak amplitude of the wave
@@ -238,7 +113,7 @@ ylabel('Amplitude'); % Label y-axis
 title('Sawtooth Signal: x(t) = A · sawtooth(2πft)'); % Title of the plot
 
 
-#SINE SQUARE WAVE
+#5
 
 frequency = 1;           % Frequency of the signal in Hz
 amplitude = 2;           % Amplitude of the square wave
@@ -262,281 +137,8 @@ title('Sine square Signal'); % Plot title
 
 
 
-#Manually SAWTOOTH SIGNAL
 
-frequency = 2;       % Frequency of the sawtooth wave in Hz
-amplitude = 3;       % Peak amplitude of the wave
-duration = 4;        % Duration of the signal in seconds
-samplingRate = 1000; % Samples per second for smoothness
-
-t = 0:1/samplingRate:duration;
-% Time vector from 0 to duration in small increments
-
-x = 2 * amplitude * (t * frequency - floor(t * frequency + 0.5));
-% Manually generate sawtooth wave:
-% (t * frequency) creates a ramp increasing with time
-% floor(...) subtracts integer part to create periodic reset
-% Multiplied by 2*amplitude to scale wave from -amplitude to +amplitude
-
-plot(t, x, 'LineWidth', 1.5);
-% Plot the sawtooth wave with thicker lines
-
-xlabel('Time (s)');  % Label x-axis
-ylabel('Amplitude'); % Label y-axis
-title('Manually Generated Sawtooth Signal'); % Title for the plot
-
-
-
-
-#Damped Sine Wave(exponentially)
-
-A = 1;                     % Initial amplitude of the sine wave
-f = 5;                     % Frequency of the sine wave in Hz
-alpha = 2;                 % Damping factor (rate of exponential decay)
-t = 0:0.001:2;             % Time vector from 0 to 2 seconds, step 0.001s
-
-x = A * exp(-alpha * t) .* sin(2 * pi * f * t);
-% Generate damped sine wave:
-%   exp(-alpha * t) applies exponential decay to amplitude
-%   sin(2 * pi * f * t) is the sine wave oscillation
-%   .* means element-wise multiplication
-
-plot(t, x);
-% Plot the damped sine wave against time
-
-title('Damped Sine Wave'); % Title of the plot
-xlabel('Time (s)');        % Label for x-axis
-ylabel('Amplitude');       % Label for y-axis
-grid on;                   % Show grid lines for better readability
-
-
-
-#MANUAL TRIANGULAR WAVE
-
-frequency = 2;         % Frequency of the wave in Hz
-amplitude = 3;         % Peak amplitude
-duration = 5;          % Duration of the signal in seconds
-samplingRate = 100;    % Number of samples per second
-
-t = 0:1/samplingRate:duration;
-% Time vector from 0 to duration, steps of 1/samplingRate
-
-x = 4 * amplitude * abs(t * frequency - floor(t * frequency + 0.5)) - amplitude;
-% Manually generate a triangular wave:
-% - (t * frequency) creates a linear ramp
-% - floor(...) subtracts integer part to repeat periodically
-% - abs(...) makes the waveform symmetric (triangle shape)
-% - multiplied by 4*amplitude and shifted by -amplitude to get range [-amplitude, amplitude]
-
-plot(t, x, 'LineWidth', 1.5);
-% Plot the triangular wave with thicker lines
-
-xlabel('Time (s)');      % Label x-axis
-ylabel('Amplitude');     % Label y-axis
-title('Manual Triangular Wave'); % Title of the plot
-
-
-
-
-#POLAR NRZ 
-
-clc;                 % Clear command window
-clear;               % Clear workspace variables
-
-data = [1 0 1 1 0 0 1 0];   % Input binary data sequence
-
-bit_duration = 1;           % Duration of each bit in seconds
-fs = 100;                   % Sampling frequency in Hz (samples per second)
-t = 0:1/fs:bit_duration-1/fs; % Time vector for one bit period
-N = length(data);           % Number of bits in data
-
-time = 0:1/fs:bit_duration*N - 1/fs; % Full time vector for entire signal
-
-polar_nrz = [];             % Initialize empty vector for the Polar NRZ signal
-
-for i = 1:N
-    if data(i) == 1
-        polar_nrz = [polar_nrz ones(1, length(t))];    % +1 V for bit 1
-    else
-        polar_nrz = [polar_nrz -ones(1, length(t))];   % -1 V for bit 0
-    end
-end
-
-figure;
-plot(time, polar_nrz, 'LineWidth', 2);   % Plot the Polar NRZ waveform with thick line
-axis([0 bit_duration*N -1.5 1.5]);       % Set axis limits: time & amplitude
-grid on;                                % Enable grid lines
-xlabel('Time (s)');                     % X-axis label
-ylabel('Amplitude (V)');                % Y-axis label
-title('Polar NRZ Line Coding');         % Plot title
-xticks(0:bit_duration:N);               % Set x-axis ticks at bit boundaries
-yticks([-1 0 1]);                       % Set y-axis ticks at -1, 0, and 1 volts
-
-
-
-#UNIPOLAR NRZ
-
-clc;                 % Clear command window
-clear;               % Clear all variables from workspace
-
-data = [1 0 1 1 0 0 1 0];   % Input binary data sequence
-
-bit_duration = 1;           % Duration of one bit (seconds)
-fs = 100;                   % Sampling frequency (samples per second)
-t = 0:1/fs:bit_duration - 1/fs; % Time vector for one bit duration
-N = length(data);           % Number of bits in the data
-
-time = 0:1/fs:bit_duration * N - 1/fs; % Time vector for entire signal duration
-
-unipolar_nrz = [];          % Initialize empty vector for Unipolar NRZ signal
-
-for i = 1:N
-    if data(i) == 1
-        unipolar_nrz = [unipolar_nrz ones(1, length(t))];   % Signal at high level for bit 1
-    else
-        unipolar_nrz = [unipolar_nrz zeros(1, length(t))];  % Signal at zero level for bit 0
-    end
-end
-
-figure;
-plot(time, unipolar_nrz, 'LineWidth', 2);  % Plot the Unipolar NRZ waveform
-axis([0 bit_duration * N 0 1]);             % Set axis limits (time and amplitude)
-grid on;                                   % Show grid
-xlabel('Time (s)');                        % Label x-axis
-ylabel('Amplitude');                       % Label y-axis
-title('Unipolar NRZ Line Coding');         % Title of the plot
-xticks(0:bit_duration:N);                  % Set x-axis ticks at bit boundaries
-yticks([0 1]);                             % Set y-axis ticks for 0 and 1
-
-
-
-#2B1Q LINE-CODED
-clc;                 % Clear command window
-clear;               % Clear all variables from workspace
-
-data = [1 0 0 0 1 1 0 1];  % Input binary data (8 bits, even length)
-
-if mod(length(data), 2) ~= 0
-    error('Input data length must be even for 2B1Q.');
-end
-% Check input length is even (because 2 bits per symbol)
-
-fs = 100;                   % Sampling frequency (samples per second)
-symbol_duration = 1;        % Duration of one symbol (2 bits) in seconds
-samples_per_symbol = fs * symbol_duration;
-% Calculate number of samples per symbol
-
-num_symbols = length(data) / 2;
-time = 0:1/fs:(num_symbols * symbol_duration) - 1/fs;
-% Create time vector for entire signal
-
-map = containers.Map({'00', '01', '10', '11'}, [-3, -1, 1, 3]);
-% Define 2B1Q mapping from 2-bit pairs to voltage levels
-
-twoB1Q = [];                % Initialize output signal vector
-for i = 1:2:length(data)
-    pair = sprintf('%d%d', data(i), data(i+1));  % Form 2-bit pair as string
-    level = map(pair);                           % Lookup voltage level
-    twoB1Q = [twoB1Q level * ones(1, samples_per_symbol)];  
-    % Append the voltage level for full symbol duration
-end
-
-figure;
-plot(time, twoB1Q, 'LineWidth', 2);              % Plot the 2B1Q signal
-axis([0 num_symbols * symbol_duration -3.5 3.5]); % Set axis limits
-grid on;                                        % Show grid
-xlabel('Time (s)');                             % Label x-axis
-ylabel('Amplitude (V)');                        % Label y-axis
-title('2B1Q (2 Binary 1 Quaternary) Line Coding'); % Plot title
-xticks(0:symbol_duration:num_symbols);          % X-axis ticks at symbol boundaries
-yticks([-3 -1 0 1 3]);                          % Y-axis ticks for voltage levels
-
-
-
-
-
-#POLAR RZ 
-clc;                 % Clear command window
-clear;               % Clear all variables from workspace
-
-data = [1 0 1 1 0 0 1 0];    % Input binary data sequence
-
-bit_duration = 1;            % Duration of each bit in seconds
-fs = 100;                    % Sampling frequency (samples per second)
-samples_per_bit = fs * bit_duration; % Number of samples per bit
-half_samples = samples_per_bit / 2;  % Half the samples for return-to-zero phase
-
-time = 0:1/fs:(length(data) * bit_duration) - 1/fs;
-% Time vector for the entire signal duration
-
-polar_rz = [];               % Initialize empty vector for Polar RZ waveform
-
-for i = 1:length(data)
-    if data(i) == 1
-        bit_wave = [ones(1, half_samples), zeros(1, half_samples)];
-        % For bit 1: +1V for first half of bit duration, then 0V
-    else
-        bit_wave = [-ones(1, half_samples), zeros(1, half_samples)];
-        % For bit 0: -1V for first half, then 0V
-    end
-    polar_rz = [polar_rz bit_wave];  % Append this bit's waveform
-end
-
-figure;
-plot(time, polar_rz, 'LineWidth', 2);  % Plot Polar RZ signal with thick lines
-axis([0 length(data)*bit_duration -1.5 1.5]);  % Set axes limits
-grid on;                               % Enable grid
-xlabel('Time (s)');                    % Label x-axis
-ylabel('Amplitude (V)');               % Label y-axis
-title('Polar RZ Line Coding');          % Title of the plot
-xticks(0:bit_duration:length(data));   % Set x-ticks at bit intervals
-yticks([-1 0 1]);                      % Set y-ticks for voltage levels
-
-
-
-
-#BIPOLAR AMI 
-
-
-
-clc;                    % Clear command window
-clear;                  % Clear workspace variables
-
-data = [1 0 1 1 0 1 0 0 1];  % Input binary data sequence
-
-bit_duration = 1;         % Duration of each bit in seconds
-fs = 100;                 % Sampling frequency in Hz
-samples_per_bit = fs * bit_duration;  % Number of samples per bit
-
-time = 0:1/fs:(length(data) * bit_duration) - 1/fs;
-% Time vector for full signal duration
-
-ami = [];                 % Initialize output signal vector for AMI
-last_polarity = -1;       % Initialize polarity so first '1' is +1
-
-for i = 1:length(data)
-    if data(i) == 1
-        last_polarity = -last_polarity;           % Alternate polarity (+1, -1)
-        bit_wave = last_polarity * ones(1, samples_per_bit);  % Generate pulse for '1'
-    else
-        bit_wave = zeros(1, samples_per_bit);      % Zero voltage for '0'
-    end
-    ami = [ami bit_wave];                          % Append bit waveform
-end
-
-figure;
-plot(time, ami, 'LineWidth', 2);                   % Plot the AMI waveform
-axis([0 length(data) * bit_duration -1.5 1.5]);    % Set axis limits
-grid on;                                           % Enable grid lines
-xlabel('Time (s)');                                % Label x-axis
-ylabel('Amplitude (V)');                           % Label y-axis
-title('Bipolar AMI (Alternate Mark Inversion) Line Coding'); % Plot title
-xticks(0:bit_duration:length(data));               % X-axis ticks at bit intervals
-yticks([-1 0 1]);                                  % Y-axis ticks at voltage levels
-
-
-
-#POLAR BIPHASE(Manchester) 
+#7
 
 
 clc;                     % Clear command window
@@ -577,48 +179,8 @@ yticks([-1 0 1]);                      % Set y-axis ticks for voltage levels
 
 
 
-#Frequency Modulation
 
-Fs = 10000;             % Sampling frequency in Hz (high for good resolution)
-t = 0:1/Fs:0.01;        % Time vector for 10 milliseconds duration
-fc = 1000;              % Carrier frequency in Hz
-fm = 100;               % Message (modulating) signal frequency in Hz
-Am = 1;                 % Amplitude of the message signal
-Ac = 1;                 % Amplitude of the carrier signal
-kf = 2 * pi * 75;       % Frequency sensitivity constant (rad/s per amplitude unit)
-
-m = Am * cos(2 * pi * fm * t);
-% Generate message signal as a cosine wave
-
-int_m = cumsum(m) / Fs;
-% Compute integral (cumulative sum) of message signal for FM modulation
-
-s_fm = Ac * cos(2 * pi * fc * t + kf * int_m);
-% Generate frequency modulated (FM) signal by varying carrier phase with integrated message
-
-figure;
-
-subplot(3,1,1);
-plot(t, m);
-title('Message Signal');
-xlabel('Time (s)');
-ylabel('Amplitude');
-
-subplot(3,1,2);
-plot(t, cos(2*pi*fc*t));
-title('Carrier Signal');
-xlabel('Time (s)');
-ylabel('Amplitude');
-
-subplot(3,1,3);
-plot(t, s_fm);
-title('FM Signal');
-xlabel('Time (s)');
-ylabel('Amplitude');
-
-
-
-#AMPLITUDE MODULATION
+#9
 
 Fs = 10000;             % Sampling frequency in Hz
 t = 0:1/Fs:0.01;        % Time vector for 10 milliseconds
@@ -659,7 +221,7 @@ xlabel('Time (s)');
 ylabel('Amplitude');
 
 
-#PULSE CODE MODULATION
+#10
 clc;                   % Clear command window
 clear;                 % Clear workspace variables
 
@@ -695,43 +257,44 @@ grid on;
 
 
 
-#Delta MODULTION
+#8 
 
 
 
-clc;                   % Clear command window
-clear;                 % Clear workspace variables
+clc;                    % Clear command window
+clear;                  % Clear workspace variables
 
-fs = 100;              % Sampling frequency (samples per second)
-t = 0:1/fs:1;          % Time vector for 1 second
-x = sin(2 * pi * 5 * t); % Input signal: 5 Hz sine wave
-delta = 0.2;           % Step size for delta modulation
+data = [1 0 1 1 0 1 0 0 1];  % Input binary data sequence
 
-x_dm = zeros(size(x)); % Initialize reconstructed (delta modulated) signal
-bitstream = zeros(size(x)); % Initialize output bitstream of 0s and 1s
+bit_duration = 1;         % Duration of each bit in seconds
+fs = 100;                 % Sampling frequency in Hz
+samples_per_bit = fs * bit_duration;  % Number of samples per bit
 
-for i = 2:length(x)
-    if x(i) > x_dm(i-1)
-        bitstream(i) = 1;            % Output bit = 1 if input > previous output
-        x_dm(i) = x_dm(i-1) + delta; % Increase output by step size
+time = 0:1/fs:(length(data) * bit_duration) - 1/fs;
+% Time vector for full signal duration
+
+ami = [];                 % Initialize output signal vector for AMI
+last_polarity = -1;       % Initialize polarity so first '1' is +1
+
+for i = 1:length(data)
+    if data(i) == 1
+        last_polarity = -last_polarity;           % Alternate polarity (+1, -1)
+        bit_wave = last_polarity * ones(1, samples_per_bit);  % Generate pulse for '1'
     else
-        bitstream(i) = 0;            % Output bit = 0 if input <= previous output
-        x_dm(i) = x_dm(i-1) - delta; % Decrease output by step size
+        bit_wave = zeros(1, samples_per_bit);      % Zero voltage for '0'
     end
+    ami = [ami bit_wave];                          % Append bit waveform
 end
 
 figure;
-plot(t, x, 'b', 'LineWidth', 1.5);    % Plot original input signal in blue
-hold on;
-stairs(t, x_dm, 'r', 'LineWidth', 1.5); % Plot reconstructed delta modulated signal in red
-xlabel('Time (s)');
-ylabel('Amplitude');
-title('Delta Modulation of a Sine Wave');
-legend('Original Signal', 'Delta Modulated Reconstruction');
-grid on;
-
-
-
+plot(time, ami, 'LineWidth', 2);                   % Plot the AMI waveform
+axis([0 length(data) * bit_duration -1.5 1.5]);    % Set axis limits
+grid on;                                           % Enable grid lines
+xlabel('Time (s)');                                % Label x-axis
+ylabel('Amplitude (V)');                           % Label y-axis
+title('Bipolar AMI (Alternate Mark Inversion) Line Coding'); % Plot title
+xticks(0:bit_duration:length(data));               % X-axis ticks at bit intervals
+yticks([-1 0 1]);                                  % Y-axis ticks at voltage levels
 
 
 
